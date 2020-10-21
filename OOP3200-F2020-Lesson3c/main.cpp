@@ -57,6 +57,8 @@ int main()
 	//the value is a game object
 	std::map<std::string, GameObject> gameObjects;
 
+	GameObject ship("ship",0,3.0f,4.0f);
+	GameObject enemy("enemy", 0, 3.0f, 4.0f);
 	
 	
 	//std::vector<GameObject*> gameObjects;

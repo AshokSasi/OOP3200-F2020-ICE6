@@ -35,7 +35,7 @@ std::string GameObject::GetName() const
 	return m_name;
 }
 
-std::string GameObject::SetName(const std::string& name)
+void GameObject::SetName(const std::string& name)
 {
 	m_name = name;
 }

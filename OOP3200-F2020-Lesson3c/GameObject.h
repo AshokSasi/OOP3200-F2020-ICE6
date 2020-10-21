@@ -27,7 +27,7 @@ public:
 	void SetPosition(float x, float y);
 	void SetPosition(const Vector2D<float>& new_position);
 	void SetID(int id);
-	std::string SetName(const std::string& name);
+	void SetName(const std::string& name);
 
 	// Utility Functions
 	std::string ToString() const;
