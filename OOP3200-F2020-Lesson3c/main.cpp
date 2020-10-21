@@ -3,7 +3,8 @@
 #include <map>
 
 #include <vector>
-
+#include "fstream"
+#include "cstdlib"
 #include "GameObject.h"
 #include "Vector3D.h"
 
@@ -55,11 +56,69 @@ int main()
 
 	//map is made up of key-value pairs - in this case key is a string
 	//the value is a game object
-	std::map<std::string, GameObject> gameObjects;
+	std::map<std::string, GameObject*> gameObjects;
 
-	GameObject ship("ship",0,3.0f,4.0f);
-	GameObject enemy("enemy", 0, 3.0f, 4.0f);
+	auto* ship =new GameObject("Ship",0,3.0f,4.0f);
+	auto* enemy = new GameObject ("Enemy", 1, 10.0f, 20.0f);
+
+
 	
+	gameObjects[ship->GetName()] = ship;
+	gameObjects[enemy->GetName()] = enemy;
+
+
+	//for every game object in gameObjects....loop.
+	for (const auto& game_object : gameObjects)
+	{
+		std::cout << "Key: " << game_object.first << std::endl;
+		std::cout << "Value: " << std::endl;
+		std::cout << " --------------------------------" << std::endl;
+		std::cout << game_object.second->ToString() << std::endl;
+	}
+
+	auto distance = Vector2D<float> ::Distance(gameObjects["Ship"]->GetPosition(), gameObjects["Enemy"]->GetPosition());
+	std::cout << "Distance between " << gameObjects["Ship"]->GetName()
+		<< " and " << gameObjects["Enemy"]->GetName() << " is " << std::to_string(distance) << std::endl;
+
+
+	std::ofstream outFile("GameObjects.txt", std::ios::out);
+	outFile << gameObjects["Ship"]->ToFile() << std::endl;
+	outFile << gameObjects["Enemy"]->ToFile() << std::endl;
+	outFile.close();
+
+	
+	std::ifstream inFile("GameObjects.txt", std::ios::in);
+	GameObject* tempGameObject = new GameObject();
+	while(inFile >> tempGameObject)
+	{
+		int id;
+		float x ,y = 0;
+		std::string name;
+		Vector2D<float> position;
+		
+		inFile >> id >> name;
+		inFile.ignore();
+		inFile >> x;
+		inFile.ignore();
+		inFile >> y;
+		
+
+		auto* tempObject = new GameObject(name, id, x, y);
+		gameObjects[name + " 2 "] = tempObject;
+		
+		
+	}
+	//for every game object in gameObjects....loop.
+	for (const auto& game_object : gameObjects)
+	{
+		std::cout << "Key: " << game_object.first << std::endl;
+		std::cout << "Value: " << std::endl;
+		std::cout << " --------------------------------" << std::endl;
+		std::cout << game_object.second->ToString() << std::endl;
+	}
+	
+
+
 	
 	//std::vector<GameObject*> gameObjects;
 
