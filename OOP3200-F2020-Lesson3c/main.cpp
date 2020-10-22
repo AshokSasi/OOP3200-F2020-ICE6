@@ -88,25 +88,28 @@ int main()
 
 	
 	std::ifstream inFile("GameObjects.txt", std::ios::in);
-	GameObject* tempGameObject = new GameObject();
-	while(inFile >> tempGameObject)
+	if (inFile.is_open())
 	{
 		int id;
-		float x ,y = 0;
+		float x, y;
 		std::string name;
-		Vector2D<float> position;
-		
-		inFile >> id >> name;
-		inFile.ignore();
-		inFile >> x;
-		inFile.ignore();
-		inFile >> y;
-		
 
-		auto* tempObject = new GameObject(name, id, x, y);
-		gameObjects[name + " 2 "] = tempObject;
-		
-		
+		while (!inFile.fail())
+		{
+			inFile >> id >> name;
+			inFile.ignore(1, ' ');
+			inFile.ignore(1, '(');
+			inFile >> x;
+			inFile.ignore(1, ',');
+			inFile.ignore(1, ' ');
+			inFile >> y;
+			inFile.ignore(1, ')');
+
+			auto* temp_object = new GameObject(name, id, x, y);
+
+			gameObjects[name + " 2"] = temp_object;
+		}
+		inFile.close();
 	}
 	//for every game object in gameObjects....loop.
 	for (const auto& game_object : gameObjects)
